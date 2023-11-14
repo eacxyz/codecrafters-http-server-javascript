@@ -42,7 +42,7 @@ const server = net.createServer((socket) => {
         if (err) {
           httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
         } else {
-          httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\n\r\n${data}`;
+          httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${data.byteLength}\r\n\r\n${data}`;
         }
       });
     } else {
