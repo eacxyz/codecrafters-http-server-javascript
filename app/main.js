@@ -19,6 +19,10 @@ const server = net.createServer((socket) => {
       const pathParts = path.split("echo/");
       const randomStr = pathParts[1];
       httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-length: ${randomStr.length}\r\n\r\n${randomStr}`;
+    } else if (path.includes("user-agent")) {
+      const userAgentParts = requestLines[2].split(" ");
+      const userAgent = userAgentParts[1];
+      httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-length: ${userAgent.length}\r\n\r\n${userAgent}`;
     } else {
       httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
     }
