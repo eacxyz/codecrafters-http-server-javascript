@@ -11,7 +11,7 @@ const server = net.createServer((socket) => {
     const startLineParts = requestLines[0].split(" ");
     const path = startLineParts[1];
     const randomString = path.split("/")[2];
-    const httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-length: ${randomString.length}\r\n\r\n${randomString}`;
+    const httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-length: ${randomString.length()}\r\n\r\n${randomString}`;
     // let httpResponse;
     // if (path === "/") {
     //   httpResponse = "HTTP/1.1 200 OK\r\n\r\n";
