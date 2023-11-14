@@ -40,6 +40,7 @@ const server = net.createServer((socket) => {
       console.log(dirPath);
       console.log(fileName);
       const filePath = path1.join(dirPath, fileName);
+      console.log(filePath);
       try {
         const fileContent = fs.readFile(filePath);
         httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${fileContent.byteLength}\r\n\r\n${fileContent}`;
