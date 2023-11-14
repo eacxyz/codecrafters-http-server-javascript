@@ -39,13 +39,13 @@ const server = net.createServer((socket) => {
       const fileName = pathParts[1];
       const filePath = path1.join(dirPath, fileName);
       console.log(filePath);
-      try {
-        const fileContent = fs.readFile(filePath);
-        console.log(fileContent);
-        httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${fileContent.byteLength}\r\n\r\n${fileContent}`;
-      } catch (err) {
-        httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
-      }
+      fs.readFile(filePath, (err, data) => {
+        if (err) {
+          httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
+        } else {
+          httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${data.byteLength}\r\n\r\n${data}`;
+        }
+      });
     } else {
       httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
     }
