@@ -10,9 +10,10 @@ const server = net.createServer((socket) => {
     const requestLines = content.split("\r\n");
     const startLineParts = requestLines[0].split(" ");
     const path = startLineParts[1];
-    const pathParts = path.split("/");
+    console.log(path);
+    const pathParts = path.split("echo/");
     console.log(pathParts);
-    const randomStr = pathParts[2];
+    const randomStr = pathParts[1];
     const httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-length: ${randomStr.length}\r\n\r\n${randomStr}`;
     // let httpResponse;
     // if (path === "/") {
