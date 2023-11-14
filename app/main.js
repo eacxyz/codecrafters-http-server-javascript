@@ -44,16 +44,31 @@ const server = net.createServer((socket) => {
       const fileName = path.split("files/")[1];
       const filePath = path1.join(dirPath, fileName);
       console.log(filePath);
-      try {
-        const file = fs.readFile(filePath);
-        httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${file.length}\r\n\r\n${file}`;
+      
+      fs.readFile(filePath, (err, file) => {
+        if (err) {
+          console.error(`Error reading file ${filePath}:`, err);
+          httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
+        } else {
+          httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${file.length}\r\n\r\n`;
+          // Append the file content to the response
+          httpResponse += file;
+        }
+    
+        // Write the response and close the connection
         socket.write(httpResponse);
         socket.end();
-      } catch (err) {
-        httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
-        socket.write(httpResponse);
-        socket.end();
-      }
+      });
+      // try {
+      //   const file = fs.readFile(filePath);
+      //   httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${file.length}\r\n\r\n${file}`;
+      //   socket.write(httpResponse);
+      //   socket.end();
+      // } catch (err) {
+      //   httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
+      //   socket.write(httpResponse);
+      //   socket.end();
+      // }
     } else {
       httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
       socket.write(httpResponse);
