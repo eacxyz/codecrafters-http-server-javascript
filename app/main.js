@@ -10,10 +10,11 @@ const server = net.createServer((socket) => {
     const requestLines = content.split("\r\n");
     const startLineParts = requestLines[0].split(" ");
     const path = startLineParts[1];
+    let httpResponse;
     if (path === "/") {
-      const httpResponse = "HTTP/1.1 200 OK\r\n\r\n";
+      httpResponse = "HTTP/1.1 200 OK\r\n\r\n";
     } else {
-      const httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
+      httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
     }
     socket.write(httpResponse);
     socket.end();
