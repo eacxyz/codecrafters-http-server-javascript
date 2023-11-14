@@ -10,17 +10,18 @@ const server = net.createServer((socket) => {
     const requestLines = content.split("\r\n");
     const startLineParts = requestLines[0].split(" ");
     const path = startLineParts[1];
-    console.log(path);
-    const pathParts = path.split("echo/");
-    console.log(pathParts);
-    const randomStr = pathParts[1];
-    const httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-length: ${randomStr.length}\r\n\r\n${randomStr}`;
-    // let httpResponse;
-    // if (path === "/") {
-    //   httpResponse = "HTTP/1.1 200 OK\r\n\r\n";
-    // } else {
-    //   httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
-    // }
+    
+    let httpResponse;
+    
+    if (path === "/") {
+      httpResponse = "HTTP/1.1 200 OK\r\n\r\n";
+    } else if (path.includes("/echo/")) {
+      const pathParts = path.split("echo/");
+      const randomStr = pathParts[1];
+      httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-length: ${randomStr.length}\r\n\r\n${randomStr}`;
+    } else {
+      httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
+    }
     socket.write(httpResponse);
     socket.end();
   });
