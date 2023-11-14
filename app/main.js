@@ -37,6 +37,8 @@ const server = net.createServer((socket) => {
     } else if (path.includes("/files/")) {
       const pathParts = path.split("files/");
       const fileName = pathParts[1];
+      console.log(dirPath);
+      console.log(fileName);
       const filePath = path1.join(dirPath, fileName);
       try {
         const fileContent = fs.readFile(filePath);
