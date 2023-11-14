@@ -59,16 +59,6 @@ const server = net.createServer((socket) => {
         socket.write(httpResponse);
         socket.end();
       });
-      // try {
-      //   const file = fs.readFile(filePath);
-      //   httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${file.length}\r\n\r\n${file}`;
-      //   socket.write(httpResponse);
-      //   socket.end();
-      // } catch (err) {
-      //   httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
-      //   socket.write(httpResponse);
-      //   socket.end();
-      // }
     } else {
       httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
       socket.write(httpResponse);
