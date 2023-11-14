@@ -1,5 +1,5 @@
 const net = require("net");
-const PATH = require("path");
+const path1 = require("path");
 const fs = require("fs");
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -37,7 +37,7 @@ const server = net.createServer((socket) => {
     } else if (path.includes("/files/")) {
       const pathParts = path.split("files/");
       const fileName = pathParts[1];
-      const filePath = PATH.join(dirPath, fileName);
+      const filePath = path1.join(dirPath, fileName);
       fs.readFile(filePath, (err, data) => {
         if (err) {
           httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
