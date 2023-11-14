@@ -26,17 +26,14 @@ const server = net.createServer((socket) => {
     
     if (path === "/") {
       httpResponse = "HTTP/1.1 200 OK\r\n\r\n";
-      socket.write(httpResponse);
     } else if (path.includes("/echo/")) {
       const pathParts = path.split("echo/");
       const randomStr = pathParts[1];
       httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-length: ${randomStr.length}\r\n\r\n${randomStr}`;
-      socket.write(httpResponse);
     } else if (path.includes("user-agent")) {
       const userAgentParts = requestLines[2].split(" ");
       const userAgent = userAgentParts[1];
       httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-length: ${userAgent.length}\r\n\r\n${userAgent}`;
-      socket.write(httpResponse);
     } else if (path.includes("/files/")) {
       const fileName = path.split("files/")[1];
       const filePath = path1.join(dirPath, fileName);
@@ -44,16 +41,14 @@ const server = net.createServer((socket) => {
       fs.readFile(filePath, (err, data) => {
         if (data) {
           httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${data.length}\r\n\r\n${data}`;
-          socket.write(httpResponse);
         } else {
           httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
-          socket.write(httpResponse);
         }
       });
     } else {
       httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
-      socket.write(httpResponse);
     }
+    socket.write(httpResponse);
     socket.end();
   });
 
