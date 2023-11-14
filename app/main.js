@@ -1,4 +1,6 @@
 const net = require("net");
+const path = require("path");
+const fs = require("fs");
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
 console.log("Logs from your program will appear here!");
@@ -13,6 +15,15 @@ const server = net.createServer((socket) => {
     
     let httpResponse;
     
+    const args = process.argv;
+    let dirPath = "";
+    for (let i = 0; i < args.length; i++) {
+      if (args[i] === "--directory" && args[i + 1]) {
+        dirPath = args[i + 1];
+        break;
+      }
+    }
+    
     if (path === "/") {
       httpResponse = "HTTP/1.1 200 OK\r\n\r\n";
     } else if (path.includes("/echo/")) {
@@ -23,6 +34,17 @@ const server = net.createServer((socket) => {
       const userAgentParts = requestLines[2].split(" ");
       const userAgent = userAgentParts[1];
       httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-length: ${userAgent.length}\r\n\r\n${userAgent}`;
+    } else if (path.includes("/files/")) {
+      const pathParts = path.split("files/");
+      const fileName = pathParts[1];
+      const filePath = path.join(dirPath, fileName);
+      fs.readFile(filePath, (err, data) => {
+        if (err) {
+          httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
+        } else {
+          httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\n\r\n${data}`;
+        }
+      });
     } else {
       httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
     }
