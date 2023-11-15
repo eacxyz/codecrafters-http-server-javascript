@@ -11,6 +11,7 @@ const server = net.createServer((socket) => {
     const content = data.toString();
     const requestLines = content.split("\r\n");
     const startLineParts = requestLines[0].split(" ");
+    const method = startLineParts[0];
     const path = startLineParts[1];
     
     let httpResponse;
@@ -44,6 +45,21 @@ const server = net.createServer((socket) => {
       const fileName = path.split("files/")[1];
       const filePath = path1.join(dirPath, fileName);
       console.log(filePath);
+      
+      if (method === "POST") {
+        const requestBody = requestLines[requestLines.length - 1];
+        fs.writeFile(filePath, requestBody, (err) => {
+          if (err) {
+            console.error(`Error writing the file ${filePath}:`, err);
+            httpResponse = "HTTP/1.1 500 Internal Server Error\r\n\r\n";
+          } else {
+            httpResponse = `HTTP/1.1 201 Created\r\n`;
+          }
+
+          socket.write(httpResponse);
+          socket.end();
+        });
+      }
       
       fs.readFile(filePath, (err, file) => {
         if (err) {
